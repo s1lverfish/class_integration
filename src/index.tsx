@@ -1,8 +1,8 @@
-import { Excalidraw } from "@excalidraw/excalidraw";
-import { NonDeletedExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
-import { AppState, BinaryFiles, ExcalidrawImperativeAPI, Gesture } from "@excalidraw/excalidraw/types/types";
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Excalidraw } from 'excalidraw-bumperactive';
+import { ExcalidrawImperativeAPI, AppState, BinaryFiles, Gesture } from 'excalidraw-bumperactive/dist/excalidraw/types';
+import { NonDeletedExcalidrawElement } from 'excalidraw-bumperactive/dist/excalidraw/element/types';
 
 export type AppProps = {
   initialData: {
@@ -71,61 +71,43 @@ export class ExcalidrawWrapper extends React.Component<AppProps, State> {
         }) => {
           this.pointerData = payload;
         }}
+        initialData={{appState: {stickerType: "rectangle"}}}
       ></Excalidraw>
     );
   }
 }
 
 export default class ExcalidrawObject{ 
-  private initialData : {elements: NonDeletedExcalidrawElement[], files: BinaryFiles} | null;
   private root;
-  public appRef : React.RefObject<ExcalidrawWrapper>;
+  public appRef: React.RefObject<ExcalidrawWrapper>;
 
-  constructor(root : HTMLDivElement, initialData: {elements: NonDeletedExcalidrawElement[], files: BinaryFiles} | null) {
-    this.appRef = React.createRef<ExcalidrawWrapper>();
-    this.initialData = initialData;
+  constructor(root: HTMLDivElement) {
     this.root = ReactDOM.createRoot(root);
-    console.log(root);
-    console.log("constructor called");
+    this.appRef = React.createRef<ExcalidrawWrapper>();
   }
 
   public openExcalidraw(){
     this.root.render(
-      //<div style={{height: "100vh"}}>
-        <ExcalidrawWrapper
-          initialData={this.initialData}
-        ></ExcalidrawWrapper>
-      //</div>
+      <ExcalidrawWrapper
+        ref={this.appRef}
+        initialData={null}
+      ></ExcalidrawWrapper>
     );
   }
 
-  private getApi = () => {
-    if(!this.appRef.current){
-      console.error("api is null");
-      return null;
+  private getExcalidrawApi(){
+    return this.appRef.current?.state.excalidrawAPI;
+  }
+
+  public changeStickerType(type: "rectangle" | "square" | "circle"){
+    const api = this.getExcalidrawApi();
+    if(!api) {
+      return;
     }
-    return this.appRef.current;
+    api.updateScene({appState: {stickerType: type}});
+  }
+
+  public closeExcalidraw(){
+    this.root.unmount();
   }
 } 
-
-/*
-//default test
-const root_element = document.getElementById('root') as HTMLDivElement;
-if(root_element){
-  const ap = new ExcalidrawObject(root_element, null);
-  ap.addListener("initialised", (api : ExcalidrawWrapper) => {
-    console.log("ExcalidrawObject has been initialised");
-    //ap.setFigureText("Fig. 2");
-    //ap.createCalloutForPart({partId: "r2bxYAxyOQ", refNum: "108", partName: "fluid inlet"});
-  });
-  ap.openExcalidraw();
-  //@ts-ignore
-  window.ap = ap;
-}else{
-  alert("root element is null")
-}
-
-/*
-const root_element = document.getElementById('root') as HTMLDivElement;
-ReactDOM.createRoot(root_element).render(<Editor />);
-*/

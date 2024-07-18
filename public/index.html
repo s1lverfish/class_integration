@@ -2,19 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
       content="Web site created using create-react-app"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="stylesheet" href="index.css" />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -25,8 +23,15 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <style>
+      #container {
+        display: grid;
+        grid-template-columns: 80% 20%;
+        height: 100vh;
+      }
+    </style>
   </head>
-  <body>
+  <body style="margin:0px">
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
     <!--
@@ -34,14 +39,39 @@
     <p id = "proba"></p>
     -->
 
-    <div id="root"></div>
-    <!--
+    <script src="./dist/bundle.js"></script>
+
+    <div id="container">
+      <div id="root"></div>
+      <div id="ui">
+        <button onclick="openExcalidraw()">Open Excalidraw</button>
+        <button onclick="closeExcalidraw()">Close Excalidraw</button>
+        <button onclick="setStickerType('rectangle')">Rectangle Sticker</button>
+        <button onclick="setStickerType('square')">Square Sticker</button>
+        <button onclick="setStickerType('circle')">Circle Sticker</button>
+      </div>
+    </div>
+
     <script>
-      function myFunction() {
-        document.getElementById("proba").innerHTML = "wowwwww";
+      let excalidrawObject;
+      openExcalidraw = () => {
+        const excalidrawDiv = document.getElementById("root");
+        excalidrawObject = new window.excalidrawPlugin.default(excalidrawDiv);
+        excalidrawObject.openExcalidraw();
+      }
+
+      closeExcalidraw = () => {
+        if(excalidrawObject) {
+          excalidrawObject.closeExcalidraw();
+          delete excalidrawObject;
+        }
+      }
+
+      setStickerType = (type) => {
+        if(!excalidrawObject) return;
+        excalidrawObject.changeStickerType(type);
       }
 
     </script>
-    -->
   </body>
 </html>
