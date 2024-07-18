@@ -1,8 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { Excalidraw } from 'excalidraw-bumperactive';
-import { ExcalidrawImperativeAPI, AppState, BinaryFiles, Gesture } from 'excalidraw-bumperactive/dist/excalidraw/types';
-import { NonDeletedExcalidrawElement } from 'excalidraw-bumperactive/dist/excalidraw/element/types';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Excalidraw } from "excalidraw-bumperactive";
+import {
+  ExcalidrawImperativeAPI,
+  AppState,
+  BinaryFiles,
+  Gesture,
+} from "excalidraw-bumperactive/dist/excalidraw/types";
+import { NonDeletedExcalidrawElement } from "excalidraw-bumperactive/dist/excalidraw/element/types";
 
 export type AppProps = {
   initialData: {
@@ -71,13 +76,13 @@ export class ExcalidrawWrapper extends React.Component<AppProps, State> {
         }) => {
           this.pointerData = payload;
         }}
-        initialData={{appState: {stickerType: "rectangle"}}}
+        initialData={{ appState: { stickerType: "rectangle" } }}
       ></Excalidraw>
     );
   }
 }
 
-export default class ExcalidrawObject{ 
+export default class ExcalidrawObject {
   private root;
   public appRef: React.RefObject<ExcalidrawWrapper>;
 
@@ -86,28 +91,28 @@ export default class ExcalidrawObject{
     this.appRef = React.createRef<ExcalidrawWrapper>();
   }
 
-  public openExcalidraw(){
+  public openExcalidraw() {
     this.root.render(
       <ExcalidrawWrapper
         ref={this.appRef}
         initialData={null}
-      ></ExcalidrawWrapper>
+      ></ExcalidrawWrapper>,
     );
   }
 
-  private getExcalidrawApi(){
+  private getExcalidrawApi() {
     return this.appRef.current?.state.excalidrawAPI;
   }
 
-  public changeStickerType(type: "rectangle" | "square" | "circle"){
+  public changeStickerType(type: "rectangle" | "square" | "circle") {
     const api = this.getExcalidrawApi();
-    if(!api) {
+    if (!api) {
       return;
     }
-    api.updateScene({appState: {stickerType: type}});
+    api.updateScene({ appState: { stickerType: type } });
   }
 
-  public closeExcalidraw(){
+  public closeExcalidraw() {
     this.root.unmount();
   }
-} 
+}
