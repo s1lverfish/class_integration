@@ -76,7 +76,13 @@ export class ExcalidrawWrapper extends React.Component<AppProps, State> {
         }) => {
           this.pointerData = payload;
         }}
-        initialData={{ appState: { stickerType: "rectangle" } }}
+        initialData={{
+          appState: {
+            stickerType: "rectangle",
+            scrollX: (window.innerWidth * 0.8) / 2,
+            scrollY: window.innerHeight / 2,
+          },
+        }}
       ></Excalidraw>
     );
   }
