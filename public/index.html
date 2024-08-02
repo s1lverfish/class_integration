@@ -1,19 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <!--
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta
+            name="description"
+            content="Web site created using create-react-app"
+        />
+        <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="stylesheet" href="index.css" />
-    <!--
+        <link rel="stylesheet" href="index.css" />
+        <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -22,56 +22,36 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
-    <style>
-      #container {
-        display: grid;
-        grid-template-columns: 80% 20%;
-        height: 100vh;
-      }
-    </style>
-  </head>
-  <body style="margin:0px">
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+        <title>React App</title>
+        <style>
+            #container {
+                display: grid;
+                grid-template-columns: 80% 20%;
+                height: 100vh;
+            }
+        </style>
+    </head>
+    <body style="margin: 0px">
+        <noscript>You need to enable JavaScript to run this app.</noscript>
 
-    <!--
+        <!--
     <button type="button" onclick = "myFunction()"> Button </button>
     <p id = "proba"></p>
     -->
 
-    <script src="./dist/bundle.js"></script>
+        <div id="container">
+            <div id="root"></div>
+            <div id="ui">
+                <button id="openExcalidraw">Open Excalidraw</button>
+                <button id="closeExcalidraw">Close Excalidraw</button>
+                <button id="rectangle">Rectangle Sticker</button>
+                <button id="square">Square Sticker</button>
+                <button id="circle">Circle Sticker</button>
+                <button id="exportSticker">Export Sticker To SVG></button>
+                <div id="svgContainer"></div>
+            </div>
+        </div>
 
-    <div id="container">
-      <div id="root"></div>
-      <div id="ui">
-        <button onclick="openExcalidraw()">Open Excalidraw</button>
-        <button onclick="closeExcalidraw()">Close Excalidraw</button>
-        <button onclick="setStickerType('rectangle')">Rectangle Sticker</button>
-        <button onclick="setStickerType('square')">Square Sticker</button>
-        <button onclick="setStickerType('circle')">Circle Sticker</button>
-      </div>
-    </div>
-
-    <script>
-      let excalidrawObject;
-      openExcalidraw = () => {
-        const excalidrawDiv = document.getElementById("root");
-        excalidrawObject = new window.excalidrawPlugin.default(excalidrawDiv);
-        excalidrawObject.openExcalidraw();
-      }
-
-      closeExcalidraw = () => {
-        if(excalidrawObject) {
-          excalidrawObject.closeExcalidraw();
-          delete excalidrawObject;
-        }
-      }
-
-      setStickerType = (type) => {
-        if(!excalidrawObject) return;
-        excalidrawObject.changeStickerType(type);
-      }
-
-    </script>
-  </body>
+        <script type="module" src="main.mjs"></script>
+    </body>
 </html>

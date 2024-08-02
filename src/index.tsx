@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Excalidraw } from "excalidraw-bumperactive";
+import {
+  Excalidraw,
+  exportSticker as exportStickerExcalidraw,
+} from "excalidraw-bumperactive";
 import {
   ExcalidrawImperativeAPI,
   AppState,
@@ -110,12 +113,30 @@ export default class ExcalidrawObject {
     return this.appRef.current?.state.excalidrawAPI;
   }
 
+  private extractSceneData(api: ExcalidrawImperativeAPI) {
+    return {
+      elements: api.getSceneElements(),
+      appState: api.getAppState(),
+      files: api.getFiles(),
+    };
+  }
+
   public changeStickerType(type: "rectangle" | "square" | "circle") {
     const api = this.getExcalidrawApi();
     if (!api) {
       return;
     }
     api.updateScene({ appState: { stickerType: type } });
+  }
+
+  public async exportSticker() {
+    const api = this.getExcalidrawApi();
+    if (!api) {
+      return;
+    }
+    const { elements, appState } = this.extractSceneData(api);
+
+    return await exportStickerExcalidraw(elements, appState);
   }
 
   public closeExcalidraw() {

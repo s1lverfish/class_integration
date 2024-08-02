@@ -1,12 +1,17 @@
 const path = require("path");
+const { experiments } = require("webpack");
 
 module.exports = {
   entry: "./src/index.tsx",
   output: {
-    filename: "bundle.js",
+    filename: "[name].bundle.js",
     path: path.resolve(__dirname, "public/dist"),
-    library: "excalidrawPlugin",
-    libraryTarget: "umd",
+    library: {
+      type: "module",
+    },
+  },
+  experiments: {
+    outputModule: true,
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
@@ -24,11 +29,6 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "babel-loader",
-      },
-      {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
@@ -41,5 +41,4 @@ module.exports = {
     compress: true,
     port: 9000,
   },
-  mode: "development",
 };
